@@ -22,6 +22,9 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} fitbuddy.ai - All rights reserved
             </p>
+            <p className="text-xs text-muted-foreground/80 mt-1 font-mono">
+              Made with <span className="text-red-500">❤️</span> by Pulkit Jain
+            </p>
           </div>
 
           {/* Links */}
