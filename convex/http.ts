@@ -266,6 +266,22 @@ http.route({
       let toolCallId: string | undefined;
 
       if (message) {
+        // If it's a Vapi webhook but not a tool call or end-of-call report, ignore it
+        const allowedTypes = ["tool-calls", "end-of-call-report"];
+        if (!allowedTypes.includes(message.type)) {
+          console.log(`[Webhook] Ignoring Vapi event of type: ${message.type}`);
+          return new Response(
+            JSON.stringify({
+              success: true,
+              message: `Ignored message type: ${message.type}`
+            }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            }
+          );
+        }
+
         // If Vapi tool call
         if (message.type === "tool-calls" && Array.isArray(message.toolCalls) && message.toolCalls.length > 0) {
           const toolCall = message.toolCalls[0];
@@ -317,6 +333,33 @@ http.route({
       if (!user_id) {
         console.warn("Missing Clerk user ID (user_id) in webhook. Falling back to guest_user.");
         user_id = "guest_user";
+      }
+
+      // Check if the user already has a plan created very recently (e.g., in the last 2 minutes) to prevent duplicates from multiple webhooks in the same call
+      if (user_id && user_id !== "guest_user") {
+        const recentPlans = await ctx.runQuery(api.plans.getUserPlans, { userId: user_id });
+        if (recentPlans && recentPlans.length > 0) {
+          const mostRecentPlan = recentPlans[0];
+          const timeDiffMs = Date.now() - mostRecentPlan._creationTime;
+          if (timeDiffMs < 120000) { // 2 minutes
+            console.log(`[Webhook] Skipping plan creation: A plan was already created ${timeDiffMs / 1000}s ago for user ${user_id}`);
+            return new Response(
+              JSON.stringify({
+                success: true,
+                message: "Skipped plan creation to prevent duplicates in the same call.",
+                data: {
+                  planId: mostRecentPlan._id,
+                  workoutPlan: mostRecentPlan.workoutPlan,
+                  dietPlan: mostRecentPlan.dietPlan,
+                }
+              }),
+              {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+              }
+            );
+          }
+        }
       }
 
       const apiKey = process.env.GEMINI_API_KEY;
