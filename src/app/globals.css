@@ -47,68 +47,68 @@
   /* Base Variables */
   --radius: 0.85rem;
 
-  /* Premium Palette Themes (Emerald, Cyan, Indigo, Dark Slate) */
-  --slate-background: #080c14;
-  --slate-card: #0f172a;
-  --color-emerald: #10b981;
-  --color-cyan: #06b6d4;
-  --color-indigo: #6366f1;
+  /* Premium Palette Themes (FitBuddy Green, Lime, Dark Slate) */
+  --slate-background: #090d16; /* Background is slightly darker to create contrast with card */
+  --slate-card: #0F172A; /* Dark */
+  --color-green-primary: #16A34A; /* Primary */
+  --color-green-secondary: #22C55E; /* Secondary */
+  --color-lime-accent: #84CC16; /* Accent */
 
   /* Backgrounds & Text */
   --background: var(--slate-background);
-  --foreground: #f8fafc;
+  --foreground: #F8FAFC; /* Light */
 
   /* Cards & Popovers */
   --card: var(--slate-card);
-  --card-foreground: #f8fafc;
+  --card-foreground: #F8FAFC;
   --popover: var(--slate-card);
-  --popover-foreground: #f8fafc;
+  --popover-foreground: #F8FAFC;
 
-  /* Primary (Emerald) */
-  --primary: var(--color-emerald);
-  --primary-foreground: #080c14;
+  /* Primary */
+  --primary: var(--color-green-primary);
+  --primary-foreground: #F8FAFC;
 
-  /* Secondary (Indigo) */
-  --secondary: var(--color-indigo);
-  --secondary-foreground: #ffffff;
+  /* Secondary */
+  --secondary: var(--color-green-secondary);
+  --secondary-foreground: #0F172A;
 
-  /* Accent (Cyan) */
-  --accent: var(--color-cyan);
-  --accent-foreground: #080c14;
+  /* Accent */
+  --accent: var(--color-lime-accent);
+  --accent-foreground: #0F172A;
 
   /* Muted elements */
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;
 
   /* System elements */
-  --destructive: #ef4444;
-  --border: rgba(99, 102, 241, 0.15);
-  --input: rgba(99, 102, 241, 0.15);
-  --ring: var(--color-indigo);
+  --destructive: #EF4444;
+  --border: rgba(22, 163, 74, 0.15); /* primary green border overlay */
+  --input: rgba(22, 163, 74, 0.15);
+  --ring: var(--color-green-primary);
 
   /* Chart Colors */
-  --chart-1: var(--color-emerald);
-  --chart-2: var(--color-indigo);
-  --chart-3: var(--color-cyan);
-  --chart-4: #38bdf8;
-  --chart-5: #a855f7;
+  --chart-1: var(--color-green-primary);
+  --chart-2: var(--color-green-secondary);
+  --chart-3: var(--color-lime-accent);
+  --chart-4: #4ade80;
+  --chart-5: #a3e635;
 
   /* Sidebar Colors */
   --sidebar: var(--slate-background);
-  --sidebar-foreground: #f8fafc;
-  --sidebar-primary: var(--color-emerald);
-  --sidebar-primary-foreground: #080c14;
-  --sidebar-accent: var(--color-indigo);
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: rgba(99, 102, 241, 0.15);
-  --sidebar-ring: var(--color-indigo);
+  --sidebar-foreground: #F8FAFC;
+  --sidebar-primary: var(--color-green-primary);
+  --sidebar-primary-foreground: #F8FAFC;
+  --sidebar-accent: var(--color-green-secondary);
+  --sidebar-accent-foreground: #0F172A;
+  --sidebar-border: rgba(22, 163, 74, 0.15);
+  --sidebar-ring: var(--color-green-primary);
 
   /* Custom UI Variables for Glassmorphism & Gradients */
-  --cyber-grid-color: rgba(99, 102, 241, 0.04);
-  --cyber-glow-primary: rgba(16, 185, 129, 0.15);
-  --cyber-glow-strong: rgba(6, 182, 212, 0.3);
-  --cyber-line-color: rgba(99, 102, 241, 0.15);
-  --cyber-terminal-bg: rgba(8, 12, 20, 0.75);
+  --cyber-grid-color: rgba(22, 163, 74, 0.03);
+  --cyber-glow-primary: rgba(22, 163, 74, 0.15);
+  --cyber-glow-strong: rgba(132, 204, 22, 0.3);
+  --cyber-line-color: rgba(22, 163, 74, 0.15);
+  --cyber-terminal-bg: rgba(9, 13, 22, 0.8);
   --cyber-text-bright: #ffffff;
   --cyber-text-muted: rgba(248, 250, 252, 0.8);
   --cyber-text-dim: rgba(248, 250, 252, 0.5);
@@ -116,23 +116,23 @@
 
 .dark {
   --background: var(--slate-background);
-  --foreground: #f8fafc;
+  --foreground: #F8FAFC;
   --card: var(--slate-card);
-  --card-foreground: #f8fafc;
+  --card-foreground: #F8FAFC;
   --popover: var(--slate-card);
-  --popover-foreground: #f8fafc;
-  --primary: var(--color-emerald);
-  --primary-foreground: #080c14;
-  --secondary: var(--color-indigo);
-  --secondary-foreground: #ffffff;
-  --accent: var(--color-cyan);
-  --accent-foreground: #080c14;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --destructive: #ef4444;
-  --border: rgba(99, 102, 241, 0.15);
-  --input: rgba(99, 102, 241, 0.15);
-  --ring: var(--color-indigo);
+  --popover-foreground: #F8FAFC;
+  --primary: var(--color-green-primary);
+  --primary-foreground: #F8FAFC;
+  --secondary: var(--color-green-secondary);
+  --secondary-foreground: #0F172A;
+  --accent: var(--color-lime-accent);
+  --accent-foreground: #0F172A;
+  --muted: #1E293B;
+  --muted-foreground: #94A3B8;
+  --destructive: #EF4444;
+  --border: rgba(22, 163, 74, 0.15);
+  --input: rgba(22, 163, 74, 0.15);
+  --ring: var(--color-green-primary);
 }
 
 @layer base {
@@ -276,4 +276,66 @@
   h1, h2, h3 {
     color: #000000 !important;
   }
+}
+
+/* Custom Scrollbar styling for a premium dark interface */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(22, 163, 74, 0.03);
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(22, 163, 74, 0.2);
+  border-radius: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(132, 204, 22, 0.4);
+}
+
+/* Dynamic Color Themes */
+:root.theme-emerald {
+  --primary: #16A34A;
+  --secondary: #22C55E;
+  --accent: #84CC16;
+  --ring: #16A34A;
+  --border: rgba(22, 163, 74, 0.15);
+  --input: rgba(22, 163, 74, 0.15);
+  --cyber-grid-color: rgba(22, 163, 74, 0.03);
+  --cyber-glow-primary: rgba(22, 163, 74, 0.15);
+}
+
+:root.theme-volt {
+  --primary: #a3e635; /* Neon Volt */
+  --secondary: #facc15;
+  --accent: #84cc16;
+  --ring: #a3e635;
+  --border: rgba(163, 230, 53, 0.18);
+  --input: rgba(163, 230, 53, 0.18);
+  --cyber-grid-color: rgba(163, 230, 53, 0.04);
+  --cyber-glow-primary: rgba(163, 230, 53, 0.15);
+}
+
+:root.theme-orange {
+  --primary: #ff5a00; /* Electric Orange */
+  --secondary: #f97316;
+  --accent: #f43f5e;
+  --ring: #ff5a00;
+  --border: rgba(255, 90, 0, 0.18);
+  --input: rgba(255, 90, 0, 0.18);
+  --cyber-grid-color: rgba(255, 90, 0, 0.04);
+  --cyber-glow-primary: rgba(255, 90, 0, 0.15);
+}
+
+:root.theme-cyan {
+  --primary: #06b6d4; /* Cyber Cyan */
+  --secondary: #3b82f6;
+  --accent: #a855f7;
+  --ring: #06b6d4;
+  --border: rgba(6, 182, 212, 0.18);
+  --input: rgba(6, 182, 212, 0.18);
+  --cyber-grid-color: rgba(6, 182, 212, 0.04);
+  --cyber-glow-primary: rgba(6, 182, 212, 0.15);
 }

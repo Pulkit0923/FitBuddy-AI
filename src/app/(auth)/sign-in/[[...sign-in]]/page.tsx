@@ -28,23 +28,23 @@ const SignInPage = () => {
           <SignIn
             appearance={{
               variables: {
-                colorPrimary: "#10b981", // Emerald primary accent
-                colorBackground: "#0f172a", // Dark slate background
-                colorText: "#f8fafc",
-                colorTextSecondary: "#94a3b8",
+                colorPrimary: "#16A34A",
+                colorBackground: "#0F172A",
+                colorText: "#F8FAFC",
+                colorTextSecondary: "#94A3B8",
                 colorInputBackground: "#020617",
-                colorInputText: "#f8fafc",
-                colorBorder: "rgba(16, 185, 129, 0.2)", 
+                colorInputText: "#F8FAFC",
+                colorBorder: "rgba(22, 163, 74, 0.2)",
               },
               elements: {
                 card: "bg-transparent shadow-none border-none",
                 headerTitle: "hidden",
                 headerSubtitle: "hidden",
-                socialButtonsBlockButton: "border border-border/40 hover:bg-slate-900/60 transition-all rounded-xl py-3 flex items-center justify-center gap-2",
+                socialButtonsBlockButton: "border border-primary/10 hover:bg-slate-900/60 transition-all rounded-xl py-3 flex items-center justify-center gap-2",
                 socialButtonsBlockButtonText: "!text-slate-100 font-semibold font-mono text-xs",
-                formButtonPrimary: "bg-primary hover:bg-primary/95 text-primary-foreground font-mono text-xs py-3 rounded-xl cursor-pointer shadow-[0_0_15px_rgba(16,185,129,0.15)] transition-all font-bold",
+                formButtonPrimary: "bg-primary hover:bg-primary/95 text-primary-foreground font-mono text-xs py-3 rounded-xl cursor-pointer shadow-[0_0_15px_rgba(22,163,74,0.25)] transition-all font-bold",
                 formFieldLabel: "!text-slate-300 font-mono text-xs mb-1.5 font-semibold",
-                formFieldInput: "!bg-slate-950 border border-border/40 !text-slate-100 rounded-xl px-3.5 py-3 text-sm focus:border-primary/80 focus:ring-1 focus:ring-primary",
+                formFieldInput: "!bg-slate-950 border border-primary/20 !text-slate-100 rounded-xl px-3.5 py-3 text-sm focus:border-primary/80 focus:ring-1 focus:ring-primary",
                 footerText: "!text-slate-400 font-mono text-xs",
                 footerActionLink: "!text-primary hover:!text-primary/80 font-mono text-xs font-bold transition-colors",
                 dividerLine: "bg-border/20",

@@ -10,45 +10,50 @@ const HomePage = () => {
       <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
       <div className="absolute top-40 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ animationDelay: "1.5s" }}></div>
 
-      <section className="relative z-10 pt-20 pb-16 lg:pt-32 lg:pb-24 flex-grow">
+      <section className="relative z-10 pt-16 pb-12 lg:pt-28 lg:pb-20 flex-grow">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             
             {/* LEFT SIDE CONTENT */}
             <div className="lg:col-span-6 space-y-8 text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono text-primary animate-pulse">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-xs font-mono text-primary uppercase tracking-wider animate-pulse">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Next-Gen AI Fitness Partner</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight">
-                Get Fit with the Power of{" "}
-                <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent animate-gradient-shift">
-                  Conversational AI
-                </span>
-              </h1>
+              <div className="space-y-4">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none uppercase text-foreground">
+                  The Next Evolution Of{" "}
+                  <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent animate-gradient-shift">
+                    Personal Training
+                  </span>
+                </h1>
+                <h2 className="text-lg md:text-xl font-bold font-mono text-accent uppercase tracking-wider">
+                  Your Personal AI Fitness Coach
+                </h2>
+              </div>
 
-              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-xl">
-                Ditch the generic workout sheets. Talk to our premium AI health coach in real-time, get a bespoke diet and gym plan, and transform your body starting today.
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-lg">
+                Ditch the generic workout sheets. Talk to our premium AI health coach in real-time, get a bespoke diet and gym plan tailored to your telemetry, and transform your body starting today.
               </p>
 
               {/* STATS */}
-              <div className="grid grid-cols-3 gap-6 py-4 border-y border-border/30 font-mono">
+              <div className="grid grid-cols-3 gap-4 py-6 border-y border-primary/10 font-mono">
                 <div className="space-y-1">
-                  <div className="text-2xl sm:text-3xl font-bold text-primary flex items-baseline">
-                    10K<span className="text-sm text-foreground/75 font-normal ml-0.5">+</span>
+                  <div className="text-2xl sm:text-3xl font-black text-primary flex items-baseline">
+                    10K<span className="text-sm text-muted-foreground font-normal ml-0.5">+</span>
                   </div>
-                  <div className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">ACTIVE USERS</div>
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-widest">ACTIVE ATHLETES</div>
                 </div>
-                <div className="space-y-1 border-l border-border/30 pl-6">
-                  <div className="text-2xl sm:text-3xl font-bold text-accent">100%</div>
-                  <div className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">PERSONALIZED</div>
+                <div className="space-y-1 border-l border-primary/10 pl-4">
+                  <div className="text-2xl sm:text-3xl font-black text-accent">100%</div>
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-widest">BESPOKE SPLITS</div>
                 </div>
-                <div className="space-y-1 border-l border-border/30 pl-6">
-                  <div className="text-2xl sm:text-3xl font-bold text-secondary flex items-baseline">
-                    2.4M<span className="text-sm text-foreground/75 font-normal ml-0.5">s</span>
+                <div className="space-y-1 border-l border-primary/10 pl-4">
+                  <div className="text-2xl sm:text-3xl font-black text-secondary flex items-baseline">
+                    2.4M<span className="text-xs text-muted-foreground font-normal ml-0.5">kcal</span>
                   </div>
-                  <div className="text-[10px] sm:text-xs text-muted-foreground uppercase tracking-wider">CALORIES BURNT</div>
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-widest">CALORIES BURNT</div>
                 </div>
               </div>
 
@@ -57,9 +62,9 @@ const HomePage = () => {
                 <Button
                   size="lg"
                   asChild
-                  className="rounded-xl overflow-hidden bg-primary text-primary-foreground px-8 py-6 text-base font-semibold cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.2)] hover:shadow-[0_0_30px_rgba(16,185,129,0.3)] transition-all hover:scale-[1.02]"
+                  className="rounded-xl overflow-hidden bg-primary text-primary-foreground px-8 py-6 text-sm font-bold cursor-pointer shadow-[0_0_25px_rgba(22,163,74,0.35)] hover:shadow-[0_0_35px_rgba(22,163,74,0.5)] transition-all hover:scale-[1.03] active:scale-[0.98]"
                 >
-                  <Link href={"/generate-program"} className="flex items-center gap-2 font-mono">
+                  <Link href={"/generate-program"} className="flex items-center gap-2 font-mono uppercase tracking-wider">
                     Start AI Voice Call
                     <ArrowRightIcon className="size-4" />
                   </Link>
@@ -69,104 +74,73 @@ const HomePage = () => {
                   size="lg"
                   variant="outline"
                   asChild
-                  className="rounded-xl border-border/60 text-foreground px-8 py-6 text-base font-semibold cursor-pointer hover:bg-muted/30 transition-all hover:scale-[1.02]"
+                  className="rounded-xl border-primary/30 text-foreground px-8 py-6 text-sm font-bold cursor-pointer hover:bg-primary/10 hover:border-primary/50 transition-all hover:scale-[1.03] active:scale-[0.98]"
                 >
-                  <a href="#featured-plans" className="font-mono">
+                  <a href="#featured-plans" className="font-mono uppercase tracking-wider">
                     Explore Programs
                   </a>
                 </Button>
               </div>
             </div>
 
-            {/* RIGHT SIDE HERO GRAPHICS */}
-            <div className="lg:col-span-6 relative mt-10 lg:mt-0">
-              {/* Decorative backdrops */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 via-secondary/5 to-transparent rounded-3xl blur-2xl"></div>
+            {/* RIGHT SIDE HERO GRAPHICS WITH MODERN 3D COACH ILLUSTRATION & FLOATING CARDS */}
+            <div className="lg:col-span-6 relative mt-12 lg:mt-0 flex justify-center items-center">
+              {/* Outer decorative backdrops */}
+              <div className="absolute w-72 h-72 rounded-full bg-primary/10 blur-3xl pointer-events-none animate-pulse-slow"></div>
+              <div className="absolute w-[450px] h-[450px] rounded-full border border-primary/5 scale-100 pointer-events-none"></div>
 
-              {/* Sleek Floating Dashboard Container */}
-              <div className="relative border border-border/40 rounded-3xl p-6 bg-card/45 backdrop-blur-xl shadow-2xl overflow-hidden animate-float">
-                <div className="flex items-center justify-between mb-6 border-b border-border/20 pb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-primary animate-ping"></div>
-                    <span className="text-xs font-mono text-primary font-bold uppercase tracking-widest">LIVE PROGRESS WATCH</span>
-                  </div>
-                  <span className="text-xs font-mono text-muted-foreground bg-muted/50 px-2.5 py-1 rounded-full border border-border/20">FITBUDDY v1.2</span>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Main Visual Frame */}
+              <div className="relative border border-primary/15 rounded-3xl p-2.5 bg-card/30 backdrop-blur-xl shadow-2xl overflow-hidden max-w-md w-full animate-float">
+                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-slate-950/60 border border-primary/10">
+                  <img
+                    src="/ai-fitness-coach.png"
+                    alt="FitBuddy AI Fitness Coach"
+                    className="w-full h-full object-cover opacity-85 saturate-[1.1] contrast-[1.05]"
+                  />
+                  {/* Subtle grid lines overlay on image */}
+                  <div className="absolute inset-0 bg-[linear-gradient(rgba(22,163,74,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(22,163,74,0.03)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none"></div>
                   
-                  {/* Calorie Ring Circle */}
-                  <div className="bg-slate-900/40 border border-border/20 rounded-2xl p-5 flex flex-col items-center justify-center relative overflow-hidden">
-                    <svg className="w-36 h-36" viewBox="0 0 100 100">
-                      <circle cx="50" cy="50" r="40" stroke="rgba(99, 102, 241, 0.1)" strokeWidth="8" fill="transparent" />
-                      <circle cx="50" cy="50" r="40" stroke="url(#emeraldGrad)" strokeWidth="8" fill="transparent" 
-                        strokeDasharray="251.2" strokeDashoffset="65" strokeLinecap="round" className="rotate-[-90deg] origin-[50px_50px] transition-all duration-1000" />
-                      <defs>
-                        <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#10b981" />
-                          <stop offset="100%" stopColor="#06b6d4" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                    <div className="absolute flex flex-col items-center justify-center">
-                      <Flame className="w-6 h-6 text-primary animate-pulse" />
-                      <span className="text-xl font-bold font-mono mt-1">1,845</span>
-                      <span className="text-[10px] font-mono text-muted-foreground">KCAL BURNT</span>
-                    </div>
+                  {/* Neon shadow vignette overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/30"></div>
+                </div>
+
+                {/* Overlaid stats badges to simulate active coach telemetry */}
+                
+                {/* Heart Rate overlay */}
+                <div className="absolute top-8 -left-6 bg-slate-900/90 border border-primary/30 backdrop-blur rounded-2xl p-4 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center gap-3 animate-float" style={{ animationDelay: "1.5s" }}>
+                  <div className="p-2.5 rounded-xl bg-primary/10 text-primary">
+                    <Activity className="w-5 h-5 animate-pulse" />
                   </div>
-
-                  {/* Real-time stats card lists */}
-                  <div className="space-y-4">
-                    <div className="bg-slate-900/40 border border-border/20 rounded-xl p-4 flex items-center gap-3">
-                      <div className="p-2.5 rounded-lg bg-accent/10 text-accent">
-                        <Activity className="w-5 h-5 animate-pulse" />
-                      </div>
-                      <div className="flex-1">
-                        <span className="text-[10px] text-muted-foreground block font-mono">HEART RATE</span>
-                        <span className="text-base font-bold font-mono text-foreground">128 BPM</span>
-                      </div>
-                    </div>
-
-                    <div className="bg-slate-900/40 border border-border/20 rounded-xl p-4 flex items-center gap-3">
-                      <div className="p-2.5 rounded-lg bg-secondary/10 text-secondary">
-                        <Trophy className="w-5 h-5" />
-                      </div>
-                      <div className="flex-1">
-                        <span className="text-[10px] text-muted-foreground block font-mono">WORKOUT STREAK</span>
-                        <span className="text-base font-bold font-mono text-foreground">12 DAYS</span>
-                      </div>
-                    </div>
+                  <div>
+                    <span className="text-[9px] text-muted-foreground block font-mono tracking-widest uppercase">HEART RATE</span>
+                    <span className="text-sm font-black font-mono text-foreground">134 BPM</span>
                   </div>
                 </div>
 
-                {/* Simulated Heartwave Graph */}
-                <div className="mt-6 pt-4 border-t border-border/20">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-xs font-mono text-muted-foreground">CARDIO LOAD FACTOR</span>
-                    <span className="text-xs font-mono text-accent">OPTIMAL ZONE</span>
+                {/* Calorie burn ring overlay */}
+                <div className="absolute bottom-8 -right-6 bg-slate-900/90 border border-accent/30 backdrop-blur rounded-2xl p-4 shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center gap-3 animate-float" style={{ animationDelay: "0.5s" }}>
+                  <div className="p-2.5 rounded-xl bg-accent/15 text-accent relative">
+                    <Flame className="w-5 h-5 animate-bounce" />
                   </div>
-                  <div className="h-16 flex items-end gap-1.5 pt-2">
-                    {[35, 55, 40, 60, 75, 50, 90, 65, 80, 45, 60, 70, 85, 50, 60].map((h, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 rounded-t bg-gradient-to-t from-secondary to-accent opacity-80"
-                        style={{ height: `${h}%` }}
-                      ></div>
-                    ))}
+                  <div>
+                    <span className="text-[9px] text-muted-foreground block font-mono tracking-widest uppercase">ENERGY BURNED</span>
+                    <span className="text-sm font-black font-mono text-accent">1,845 KCAL</span>
                   </div>
+                </div>
+
+                {/* Streak Badge overlay */}
+                <div className="absolute top-4 right-4 bg-primary/20 border border-primary/45 backdrop-blur-md rounded-xl px-3 py-1.5 shadow font-mono text-[9px] text-primary font-bold flex items-center gap-1.5">
+                  <Trophy className="w-3.5 h-3.5 text-accent animate-pulse" />
+                  <span>STREAK: 12 DAYS</span>
+                </div>
+
+                {/* Safety Protocol status overlay */}
+                <div className="absolute bottom-4 left-4 bg-slate-900/80 border border-border rounded-xl px-3 py-1.5 font-mono text-[9px] text-muted-foreground flex items-center gap-1.5">
+                  <Shield className="w-3.5 h-3.5 text-primary" />
+                  <span>TELEMETRY ONLINE</span>
                 </div>
               </div>
 
-              {/* Decorative floating details */}
-              <div className="absolute -top-4 -right-4 bg-primary/10 border border-primary/20 backdrop-blur rounded-xl p-3 shadow-lg font-mono text-[10px] text-primary flex items-center gap-2 animate-float" style={{ animationDelay: "1s" }}>
-                <Shield className="w-4 h-4" />
-                <span>AI SAFETY PROTOCOLS STABLE</span>
-              </div>
-
-              <div className="absolute -bottom-4 -left-4 bg-secondary/10 border border-secondary/20 backdrop-blur rounded-xl p-3 shadow-lg font-mono text-[10px] text-secondary flex items-center gap-2 animate-float" style={{ animationDelay: "2s" }}>
-                <Sparkles className="w-4 h-4" />
-                <span>MEAL TIMING SYNCHRONIZED</span>
-              </div>
             </div>
 
           </div>

@@ -34,16 +34,27 @@ const GenerateProgramPage = () => {
   const router = useRouter();
   const messageContainerRef = useRef<HTMLDivElement>(null);
 
-  // SOLUTION to get rid of "Meeting has ended" error
+  // SOLUTION to get rid of "Meeting has ended" and "Krisp processor" errors
   useEffect(() => {
     const originalError = console.error;
     console.error = function (msg, ...args) {
-      if (
-        msg &&
-        (msg.includes("Meeting has ended") ||
-          (args[0] && args[0].toString().includes("Meeting has ended")))
-      ) {
-        console.log("Ignoring known error: Meeting has ended");
+      const msgStr = typeof msg === "string" ? msg : (msg?.toString() || "");
+      const argStr = args[0] ? args[0].toString() : "";
+
+      const shouldIgnore =
+        msgStr.includes("Meeting has ended") ||
+        msgStr.includes("Error unloading krisp processor") ||
+        msgStr.includes("WASM_OR_WORKER_NOT_READY") ||
+        msgStr.includes("error applying mic processor") ||
+        msgStr.includes("didInitError") ||
+        argStr.includes("Meeting has ended") ||
+        argStr.includes("Error unloading krisp processor") ||
+        argStr.includes("WASM_OR_WORKER_NOT_READY") ||
+        argStr.includes("error applying mic processor") ||
+        argStr.includes("didInitError");
+
+      if (shouldIgnore) {
+        console.log("Ignoring known error:", msgStr || argStr);
         return;
       }
       return originalError.call(console, msg, ...args);
@@ -142,6 +153,7 @@ const GenerateProgramPage = () => {
       setConnecting(true);
       setMessages([]);
       setCallEnded(false);
+      setErrorMsg("");
 
       const fullName = user?.firstName
         ? `${user.firstName} ${user.lastName || ""}`.trim()
@@ -154,10 +166,16 @@ const GenerateProgramPage = () => {
           full_name: fullName,
           user_id: user?.id || "guest_user",
         },
-        serverUrl: convexSiteUrl
+        serverUrl: convexSiteUrl,
+        backgroundSpeechDenoisingPlan: {
+          smartDenoisingPlan: {
+            enabled: false
+          }
+        }
       } as any);
-    } catch (error) {
-      console.error("Failed to start call:", error);
+    } catch (error: any) {
+      console.warn("Failed to start call:", error);
+      setErrorMsg(error.message || "Failed to establish voice call connection. Please try again.");
       setConnecting(false);
     }
   };
@@ -206,45 +224,45 @@ const GenerateProgramPage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen text-foreground overflow-hidden pb-12 pt-24 bg-background relative">
+    <div className="flex flex-col min-h-screen text-foreground overflow-hidden pb-12 pt-28 bg-background relative">
       {/* Background gradients */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="container mx-auto px-4 h-full max-w-4xl relative z-10 flex-grow flex flex-col justify-between">
         
         {/* Title Block */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-mono text-primary mb-2">
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-[10px] font-mono text-primary uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5 animate-pulse" />
             <span>Interactive Fitness Telemetry</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight font-mono">
-            CONSULT <span className="text-primary font-bold">FITBUDDY AI</span>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight uppercase text-foreground">
+            CONSULT <span className="text-primary">FITBUDDY AI</span>
           </h1>
-          <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
+          <p className="text-xs md:text-sm text-muted-foreground mt-2 max-w-md mx-auto leading-relaxed">
             Choose voice call consultation or specify your exact fitness metrics and dietary choices below.
           </p>
         </div>
 
         {/* Tab Selector */}
         <div className="flex justify-center mb-8">
-          <div className="bg-slate-900/40 border border-border/20 p-1 rounded-xl flex gap-1 w-full max-w-sm">
+          <div className="bg-slate-950/60 border border-primary/10 p-1 rounded-2xl flex gap-1.5 w-full max-w-sm shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
             <button
               onClick={() => setActiveTab("voice")}
-              className={`flex-1 py-2.5 rounded-lg font-mono text-xs font-bold cursor-pointer transition-all duration-200 ${
+              className={`flex-1 py-3 rounded-xl font-mono text-xs font-bold cursor-pointer transition-all duration-300 ${
                 activeTab === "voice"
-                  ? "bg-primary/25 text-primary border border-primary/20 shadow-[0_0_12px_rgba(16,185,129,0.1)]"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-primary text-primary-foreground shadow-[0_0_15px_rgba(22,163,74,0.3)]"
+                  : "text-muted-foreground hover:text-foreground hover:bg-primary/5"
               }`}
             >
               🎙️ AI VOICE COACH
             </button>
             <button
               onClick={() => setActiveTab("manual")}
-              className={`flex-1 py-2.5 rounded-lg font-mono text-xs font-bold cursor-pointer transition-all duration-200 ${
+              className={`flex-1 py-3 rounded-xl font-mono text-xs font-bold cursor-pointer transition-all duration-300 ${
                 activeTab === "manual"
-                  ? "bg-primary/25 text-primary border border-primary/20 shadow-[0_0_12px_rgba(16,185,129,0.1)]"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-primary text-primary-foreground shadow-[0_0_15px_rgba(22,163,74,0.3)]"
+                  : "text-muted-foreground hover:text-foreground hover:bg-primary/5"
               }`}
             >
               ⚙️ PREFERENCES FORM
@@ -260,16 +278,16 @@ const GenerateProgramPage = () => {
                 
                 {/* Pulsing Backlit rings */}
                 <div className={`absolute w-72 h-72 rounded-full border border-primary/20 transition-all duration-700 scale-100 ${
-                  isSpeaking ? "animate-pulse-slow border-primary/40 bg-primary/5 shadow-[0_0_50px_rgba(16,185,129,0.15)]" : ""
+                  isSpeaking ? "animate-pulse-slow border-primary/45 bg-primary/5 shadow-[0_0_60px_rgba(22,163,74,0.25)]" : ""
                 }`}></div>
-                <div className={`absolute w-96 h-96 rounded-full border border-secondary/10 transition-all duration-700 scale-100 ${
-                  isSpeaking ? "animate-pulse-slow border-secondary/25 shadow-[0_0_80px_rgba(99,102,241,0.1)]" : ""
+                <div className={`absolute w-96 h-96 rounded-full border border-accent/10 transition-all duration-700 scale-100 ${
+                  isSpeaking ? "animate-pulse-slow border-accent/25 shadow-[0_0_90px_rgba(132,204,22,0.15)]" : ""
                 }`} style={{ animationDelay: "1s" }}></div>
 
                 {/* Glowing Orb Hologram (Avatar) */}
-                <div className="relative w-48 h-48 rounded-full border border-border/40 p-1.5 bg-card/60 backdrop-blur shadow-2xl overflow-hidden group">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-accent/20 to-secondary/20 animate-slow-spin"></div>
-                  <div className="w-full h-full rounded-full overflow-hidden bg-slate-950 border border-border/20 flex items-center justify-center relative z-10">
+                <div className="relative w-48 h-48 rounded-full border border-primary/30 p-2 bg-slate-900/60 backdrop-blur-xl shadow-2xl overflow-hidden group">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 via-accent/30 to-secondary/30 animate-slow-spin"></div>
+                  <div className="w-full h-full rounded-full overflow-hidden bg-slate-950 border border-primary/20 flex items-center justify-center relative z-10">
                     <img
                       src="/fitbuddy-orb.png"
                       alt="FitBuddy Orb Hologram"
@@ -297,25 +315,32 @@ const GenerateProgramPage = () => {
                       />
                     ))
                   ) : callActive ? (
-                    <div className="text-xs font-mono text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
-                      <AudioLines className="w-4 h-4 text-primary animate-pulse" />
-                      <span>Listening to your voice...</span>
+                    <div className="text-xs font-mono text-primary uppercase tracking-widest flex items-center gap-1.5 font-bold animate-pulse">
+                      <AudioLines className="w-4 h-4 text-primary" />
+                      <span>Listening... speak now</span>
                     </div>
                   ) : (
-                    <div className="text-xs font-mono text-muted-foreground uppercase tracking-widest">
-                      Assistant offline
+                    <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest font-semibold bg-slate-950/40 border border-primary/5 px-3 py-1 rounded-full">
+                      Assistant Offline
                     </div>
                   )}
                 </div>
               </div>
             </div>
 
+            {/* ERROR DISPLAY */}
+            {errorMsg && (
+              <div className="w-full max-w-2xl mx-auto mb-4 bg-destructive/10 border border-destructive/25 text-destructive text-xs font-mono p-4 rounded-2xl text-center shadow-[0_4px_12px_rgba(239,68,68,0.15)] animate-fadeIn">
+                ⚠️ {errorMsg}
+              </div>
+            )}
+
             {/* DYNAMIC TRANSCRIPT DRAWER */}
             <div className="w-full max-w-2xl mx-auto mb-6">
               {messages.length > 0 ? (
                 <div
                   ref={messageContainerRef}
-                  className="w-full bg-card/50 backdrop-blur border border-border/30 rounded-2xl p-5 h-48 overflow-y-auto shadow-inner transition-all duration-300 scroll-smooth space-y-4"
+                  className="w-full bg-slate-900/40 backdrop-blur border border-primary/10 rounded-2xl p-5 h-48 overflow-y-auto shadow-inner transition-all duration-300 scroll-smooth space-y-4 shadow-[inset_0_2px_8px_rgba(0,0,0,0.6)]"
                 >
                   {messages.map((msg, index) => (
                     <div
@@ -325,16 +350,16 @@ const GenerateProgramPage = () => {
                       } animate-fadeIn`}
                     >
                       <div className="flex items-center gap-1.5 mb-1">
-                        <span className={`text-[10px] font-mono font-bold uppercase tracking-wider ${
+                        <span className={`text-[9px] font-mono font-bold uppercase tracking-wider ${
                           msg.role === "assistant" ? "text-primary" : "text-accent"
                         }`}>
                           {msg.role === "assistant" ? "FitBuddy AI" : "You"}
                         </span>
                       </div>
-                      <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
+                      <div className={`max-w-[85%] rounded-2xl px-4.5 py-2.5 text-xs ${
                         msg.role === "assistant"
-                          ? "bg-slate-900/60 border border-border/20 text-foreground rounded-tl-none font-sans"
-                          : "bg-primary text-primary-foreground rounded-tr-none font-mono text-xs font-medium"
+                          ? "bg-slate-950/70 border border-primary/10 text-foreground rounded-tl-none font-sans leading-relaxed"
+                          : "bg-primary text-primary-foreground rounded-tr-none font-mono font-medium shadow-[0_0_10px_rgba(22,163,74,0.15)]"
                       }`}>
                         {msg.content}
                       </div>
@@ -343,8 +368,8 @@ const GenerateProgramPage = () => {
 
                   {callEnded && (
                     <div className="flex flex-col items-center justify-center py-4 text-center animate-fadeIn">
-                      <div className="w-2.5 h-2.5 rounded-full bg-primary animate-ping mb-2"></div>
-                      <p className="text-xs font-mono text-primary uppercase tracking-wider">
+                      <div className="w-2.5 h-2.5 rounded-full bg-primary animate-ping mb-2 shadow-[0_0_6px_#16A34A]"></div>
+                      <p className="text-xs font-mono text-primary uppercase tracking-wider font-bold">
                         Plan generated successfully! Syncing to profile...
                       </p>
                     </div>
@@ -352,8 +377,8 @@ const GenerateProgramPage = () => {
                 </div>
               ) : (
                 callActive && (
-                  <div className="w-full bg-card/30 border border-border/20 rounded-2xl p-6 text-center text-xs font-mono text-muted-foreground animate-pulse">
-                    Introduce yourself and tell the coach your goal, days to workout, and diet targets.
+                  <div className="w-full bg-slate-900/20 border border-primary/10 rounded-2xl p-6 text-center text-xs font-mono text-muted-foreground animate-pulse">
+                    Introduce yourself and tell the coach your physical stats, gym goal, schedule, and diet targets.
                   </div>
                 )
               )}
@@ -363,19 +388,19 @@ const GenerateProgramPage = () => {
             <div className="w-full max-w-md mx-auto flex items-center justify-center gap-4">
               {/* User profile float avatar */}
               {user && (
-                <div className="bg-card/50 border border-border/30 backdrop-blur-md rounded-full px-3 py-1.5 flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
+                <div className="bg-slate-900/60 border border-primary/10 backdrop-blur-md rounded-full px-3.5 py-1.5 flex items-center gap-2 font-mono text-[10px] text-muted-foreground">
                   <img src={user.imageUrl} alt="User profile" className="w-5 h-5 rounded-full object-cover border border-primary/30" />
-                  <span>{user.firstName}</span>
+                  <span className="font-bold text-foreground">{user.firstName}</span>
                 </div>
               )}
 
               <Button
-                className={`h-14 px-8 rounded-2xl font-mono text-sm tracking-wider cursor-pointer font-bold shadow-lg transition-all duration-300 hover:scale-[1.03] ${
+                className={`h-14 px-8 rounded-2xl font-mono text-xs tracking-wider cursor-pointer font-bold shadow-lg transition-all duration-300 hover:scale-[1.03] active:scale-[0.97] uppercase ${
                   callActive
-                    ? "bg-destructive text-white hover:bg-destructive/90 shadow-destructive/20"
+                    ? "bg-destructive text-white hover:bg-destructive/90 shadow-destructive/20 shadow-[0_0_15px_rgba(239,68,68,0.2)]"
                     : connecting
-                      ? "bg-muted text-muted-foreground border cursor-not-allowed"
-                      : "bg-primary text-primary-foreground hover:bg-primary/95 shadow-primary/20"
+                      ? "bg-muted text-muted-foreground border border-border cursor-not-allowed"
+                      : "bg-primary text-primary-foreground hover:bg-primary/95 shadow-primary/20 shadow-[0_0_20px_rgba(22,163,74,0.25)]"
                 }`}
                 onClick={toggleCall}
                 disabled={connecting || callEnded}
@@ -395,61 +420,61 @@ const GenerateProgramPage = () => {
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-primary-foreground" />
+                    <Phone className="w-4 h-4 text-primary-foreground animate-bounce" />
                     START VOICE CALL
                   </span>
                 )}
               </Button>
 
-              <div className="bg-card/50 border border-border/30 backdrop-blur-md rounded-full p-2.5 flex items-center justify-center text-muted-foreground">
-                <Shield className="w-4 h-4 text-accent" />
+              <div className="bg-slate-900/60 border border-primary/10 backdrop-blur-md rounded-full p-2.5 flex items-center justify-center text-muted-foreground">
+                <Shield className="w-4.5 h-4.5 text-primary" />
               </div>
             </div>
           </div>
         ) : (
-          <form onSubmit={handleManualSubmit} className="w-full max-w-2xl mx-auto border border-border/30 rounded-2xl p-6 bg-card/40 backdrop-blur-md space-y-6 animate-fadeIn">
-            <h3 className="text-lg font-bold font-mono text-foreground border-b border-border/20 pb-3 flex items-center gap-2">
+          <form onSubmit={handleManualSubmit} className="w-full max-w-2xl mx-auto border border-primary/10 rounded-2xl p-8 bg-card/30 backdrop-blur-xl space-y-6 animate-fadeIn shadow-xl">
+            <h3 className="text-sm font-bold font-mono text-foreground border-b border-primary/10 pb-4 flex items-center gap-2 uppercase tracking-wider">
               <Sparkles className="w-4 h-4 text-primary animate-pulse" />
               DEFINE FITBUDDY MATRICES
             </h3>
 
             {errorMsg && (
-              <div className="bg-destructive/10 border border-destructive/20 text-destructive text-xs font-mono p-3.5 rounded-xl text-center">
+              <div className="bg-destructive/10 border border-destructive/25 text-destructive text-xs font-mono p-3.5 rounded-xl text-center">
                 {errorMsg}
               </div>
             )}
 
             <div className="grid grid-cols-3 gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-mono text-muted-foreground uppercase font-bold">Age</label>
+                <label className="text-[9px] font-mono text-muted-foreground uppercase font-black tracking-wider">Age</label>
                 <input
                   type="number"
                   placeholder="e.g. 25"
                   value={formData.age}
                   onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                  className="w-full bg-slate-950 border border-border/30 text-foreground rounded-xl px-3.5 py-2.5 text-xs font-mono focus:border-primary/80 outline-none"
+                  className="w-full bg-slate-950 border border-primary/15 text-foreground rounded-xl px-4 py-3 text-xs font-mono focus:border-primary/80 focus:ring-1 focus:ring-primary/30 outline-none transition-all"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] font-mono text-muted-foreground uppercase font-bold">Height</label>
+                <label className="text-[9px] font-mono text-muted-foreground uppercase font-black tracking-wider">Height</label>
                 <input
                   type="text"
                   placeholder="e.g. 180 cm"
                   value={formData.height}
                   onChange={(e) => setFormData({ ...formData, height: e.target.value })}
-                  className="w-full bg-slate-950 border border-border/30 text-foreground rounded-xl px-3.5 py-2.5 text-xs font-mono focus:border-primary/80 outline-none"
+                  className="w-full bg-slate-950 border border-primary/15 text-foreground rounded-xl px-4 py-3 text-xs font-mono focus:border-primary/80 focus:ring-1 focus:ring-primary/30 outline-none transition-all"
                   required
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-[10px] font-mono text-muted-foreground uppercase font-bold">Weight</label>
+                <label className="text-[9px] font-mono text-muted-foreground uppercase font-black tracking-wider">Weight</label>
                 <input
                   type="text"
                   placeholder="e.g. 75 kg"
                   value={formData.weight}
                   onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
-                  className="w-full bg-slate-950 border border-border/30 text-foreground rounded-xl px-3.5 py-2.5 text-xs font-mono focus:border-primary/80 outline-none"
+                  className="w-full bg-slate-950 border border-primary/15 text-foreground rounded-xl px-4 py-3 text-xs font-mono focus:border-primary/80 focus:ring-1 focus:ring-primary/30 outline-none transition-all"
                   required
                 />
               </div>
@@ -457,11 +482,11 @@ const GenerateProgramPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-mono text-muted-foreground uppercase font-bold block">Goal Matrix</label>
+                <label className="text-[9px] font-mono text-muted-foreground uppercase font-black tracking-wider block">Goal Matrix</label>
                 <select
                   value={formData.fitness_goal}
                   onChange={(e) => setFormData({ ...formData, fitness_goal: e.target.value })}
-                  className="w-full bg-slate-950 border border-border/30 text-foreground rounded-xl px-3 py-2.5 text-xs font-mono focus:border-primary/80 outline-none cursor-pointer"
+                  className="w-full bg-slate-950 border border-primary/15 text-foreground rounded-xl px-3.5 py-3 text-xs font-mono focus:border-primary/80 focus:ring-1 focus:ring-primary/30 outline-none cursor-pointer transition-all"
                 >
                   <option value="Muscle gain">Muscle gain (Hypertrophy & overload)</option>
                   <option value="Weight loss">Weight loss (Deficit & cardio)</option>
@@ -472,11 +497,11 @@ const GenerateProgramPage = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-mono text-muted-foreground uppercase font-bold block">Workout Setup</label>
+                <label className="text-[9px] font-mono text-muted-foreground uppercase font-black tracking-wider block">Workout Setup</label>
                 <select
                   value={formData.workout_setup}
                   onChange={(e) => setFormData({ ...formData, workout_setup: e.target.value })}
-                  className="w-full bg-slate-950 border border-border/30 text-foreground rounded-xl px-3 py-2.5 text-xs font-mono focus:border-primary/80 outline-none cursor-pointer"
+                  className="w-full bg-slate-950 border border-primary/15 text-foreground rounded-xl px-3.5 py-3 text-xs font-mono focus:border-primary/80 focus:ring-1 focus:ring-primary/30 outline-none cursor-pointer transition-all"
                 >
                   <option value="Gym Workouts">Gym Setup (Barbells, dumbbells, machines)</option>
                   <option value="Home Workouts">Home Setup (Bodyweight, bands, HIIT)</option>
@@ -486,11 +511,11 @@ const GenerateProgramPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-mono text-muted-foreground uppercase font-bold block">Workout Schedule</label>
+                <label className="text-[9px] font-mono text-muted-foreground uppercase font-black tracking-wider block">Workout Schedule</label>
                 <select
                   value={formData.workout_days}
                   onChange={(e) => setFormData({ ...formData, workout_days: e.target.value })}
-                  className="w-full bg-slate-950 border border-border/30 text-foreground rounded-xl px-3 py-2.5 text-xs font-mono focus:border-primary/80 outline-none cursor-pointer"
+                  className="w-full bg-slate-950 border border-primary/15 text-foreground rounded-xl px-3.5 py-3 text-xs font-mono focus:border-primary/80 focus:ring-1 focus:ring-primary/30 outline-none cursor-pointer transition-all"
                 >
                   <option value="3">3 Days/week (Standard split)</option>
                   <option value="4">4 Days/week (Upper/Lower or Push/Pull)</option>
@@ -500,11 +525,11 @@ const GenerateProgramPage = () => {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-mono text-muted-foreground uppercase font-bold block">Training Experience</label>
+                <label className="text-[9px] font-mono text-muted-foreground uppercase font-black tracking-wider block">Training Experience</label>
                 <select
                   value={formData.fitness_level}
                   onChange={(e) => setFormData({ ...formData, fitness_level: e.target.value })}
-                  className="w-full bg-slate-950 border border-border/30 text-foreground rounded-xl px-3 py-2.5 text-xs font-mono focus:border-primary/80 outline-none cursor-pointer"
+                  className="w-full bg-slate-950 border border-primary/15 text-foreground rounded-xl px-3.5 py-3 text-xs font-mono focus:border-primary/80 focus:ring-1 focus:ring-primary/30 outline-none cursor-pointer transition-all"
                 >
                   <option value="Beginner">Beginner (Starting out)</option>
                   <option value="Intermediate">Intermediate (1-3 years lift)</option>
@@ -514,11 +539,11 @@ const GenerateProgramPage = () => {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-mono text-muted-foreground uppercase font-bold block">Diet & Nutrition Profile</label>
+              <label className="text-[9px] font-mono text-muted-foreground uppercase font-black tracking-wider block">Diet & Nutrition Profile</label>
               <select
                 value={formData.dietary_restrictions}
                 onChange={(e) => setFormData({ ...formData, dietary_restrictions: e.target.value })}
-                className="w-full bg-slate-950 border border-border/30 text-foreground rounded-xl px-3 py-2.5 text-xs font-mono focus:border-primary/80 outline-none cursor-pointer"
+                className="w-full bg-slate-950 border border-primary/15 text-foreground rounded-xl px-3.5 py-3 text-xs font-mono focus:border-primary/80 focus:ring-1 focus:ring-primary/30 outline-none cursor-pointer transition-all"
               >
                 <option value="Indian diet, High protein">Indian Diet (High protein / Lentils, paneer, eggs, lean meats)</option>
                 <option value="Indian diet, Vegetarian">Indian Diet (Vegetarian / Paneer, dal, chana, roti)</option>
@@ -530,20 +555,20 @@ const GenerateProgramPage = () => {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-mono text-muted-foreground uppercase font-bold block">Physical Injuries / Limitations</label>
+              <label className="text-[9px] font-mono text-muted-foreground uppercase font-black tracking-wider block">Physical Injuries / Limitations</label>
               <input
                 type="text"
                 placeholder="e.g. Lower back pain, shoulder impingement, or None"
                 value={formData.injuries}
                 onChange={(e) => setFormData({ ...formData, injuries: e.target.value })}
-                className="w-full bg-slate-950 border border-border/30 text-foreground rounded-xl px-3.5 py-2.5 text-xs font-mono focus:border-primary/80 outline-none"
+                className="w-full bg-slate-950 border border-primary/15 text-foreground rounded-xl px-4 py-3 text-xs font-mono focus:border-primary/80 focus:ring-1 focus:ring-primary/30 outline-none transition-all"
               />
             </div>
 
             <Button
               type="submit"
               disabled={generating}
-              className="w-full h-14 bg-primary hover:bg-primary/95 text-primary-foreground font-mono text-xs font-bold rounded-xl cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.2)] transition-all flex items-center justify-center gap-2"
+              className="w-full h-14 bg-primary hover:bg-primary/95 text-primary-foreground font-mono text-xs font-black uppercase tracking-wider rounded-xl cursor-pointer shadow-[0_0_20px_rgba(22,163,74,0.3)] transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
             >
               {generating ? (
                 <>

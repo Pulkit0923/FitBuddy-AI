@@ -154,9 +154,9 @@ const UserPrograms = () => {
                 </div>
               </CardContent>
 
-              <CardFooter className="px-6 py-4 border-t border-border/30 bg-slate-900/10">
+              <CardFooter className="px-6 py-4 border-t border-primary/10 bg-slate-950/20">
                 <Link href="/generate-program" className="w-full">
-                  <Button className="w-full bg-slate-900 hover:bg-slate-800 text-foreground hover:text-white border border-border/40 font-mono text-xs py-5 rounded-xl cursor-pointer">
+                  <Button className="w-full bg-slate-900 hover:bg-slate-800 text-foreground hover:text-white border border-primary/20 hover:border-primary/50 font-mono text-xs py-5 rounded-xl cursor-pointer transition-all duration-300">
                     Clone Program Settings
                     <ChevronRight className="ml-1.5 h-3.5 w-3.5 text-primary" />
                   </Button>
@@ -171,7 +171,7 @@ const UserPrograms = () => {
           <Link href="/generate-program">
             <Button
               size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 text-base font-semibold rounded-xl cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.15)] transition-all hover:scale-[1.02]"
+              className="bg-primary text-primary-foreground hover:bg-primary/95 px-8 py-6 text-base font-bold rounded-xl cursor-pointer shadow-[0_0_25px_rgba(22,163,74,0.3)] transition-all hover:scale-[1.03] active:scale-[0.98] font-mono uppercase tracking-wider"
             >
               Consult FitBuddy AI Assistant
               <Sparkles className="ml-2 h-4 w-4 animate-pulse" />
