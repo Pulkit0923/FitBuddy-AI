@@ -22,9 +22,6 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} fitbuddy.ai - All rights reserved
             </p>
-            <p className="text-xs text-muted-foreground/80 mt-1 font-mono">
-              Made with <span className="text-red-500">❤️</span> by Pulkit Jain
-            </p>
           </div>
 
           {/* Links */}
@@ -72,6 +69,13 @@ const Footer = () => {
             <div className="w-2 h-2 rounded-full bg-green-500"></div>
             <span className="text-xs font-mono">SYSTEM OPERATIONAL</span>
           </div>
+        </div>
+
+        {/* Bottom row developer attribution */}
+        <div className="mt-8 pt-6 border-t border-border/20 text-center">
+          <p className="text-base font-bold font-mono tracking-wide text-foreground/90">
+            Made with <span className="text-red-500 animate-pulse inline-block">❤️</span> by <span className="text-primary hover:text-accent transition-colors duration-200">Pulkit Jain</span>
+          </p>
         </div>
       </div>
     </footer>
